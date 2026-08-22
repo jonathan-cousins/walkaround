@@ -1,0 +1,3 @@
+## 2024-10-24 - Missing Aria Labels on Custom Component Framework
+**Learning:** The custom component framework used in `web/` leans heavily on icon-only buttons classes like `icon-btn`, `icon-btn-trans`, `nav-arrow-btn`, `camera-snap-btn`, and `flag-damage-btn` without passing or enforcing accessible names (`aria-label`).
+**Action:** When working on this application's custom framework components, specifically ones injecting or wrapping raw `<i>` icons inside `<button>`, be proactive about adding `aria-label`s. We should also investigate if there is a centralized function to construct these components that can be typed to require an accessible name.
