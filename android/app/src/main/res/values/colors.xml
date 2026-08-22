@@ -1,0 +1,9 @@
+<resources>
+    <color name="emerald_primary">#059669</color>
+    <color name="emerald_dark">#047857</color>
+    <color name="amber_warning">#D97706</color>
+    <color name="porcelain_bg">#F8FAFC</color>
+    <color name="card_bg">#FFFFFF</color>
+    <color name="text_primary">#0F172A</color>
+    <color name="text_secondary">#64748B</color>
+</resources>

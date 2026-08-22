@@ -1,0 +1,33 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Xcode & Swift
+.build/
+DerivedData/
+*.xcuserstate
+*.xcuserdata
+*.xcuserdatad
+*.xcworkspace/xcuserdata
+*.xcuserdatad/
+*.xcscmblueprint
+*~.nib
+
+# Android & Gradle
+.gradle/
+build/
+app/build/
+local.properties
+*.apk
+*.aab
+*.dex
+.idea/
+*.iml
+.android/
+
+# General
+*.log
+*.tmp

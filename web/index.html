@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Walkaround - 30-Second Car Rental Proof</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- jsPDF for live in-browser PDF generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- Phosphor Icons (Regular, Bold, Fill) -->
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+</head>
+<body>
+  <div class="mobile-frame">
+    <!-- Status Bar -->
+    <div class="ios-status-bar">
+      <span class="time" id="clock-time">9:41</span>
+      <div class="notch"></div>
+      <div class="status-icons">
+        <i class="ph ph-cell-signal-full"></i>
+        <i class="ph ph-wifi-high"></i>
+        <i class="ph ph-battery-full"></i>
+      </div>
+    </div>
+
+    <!-- Main Navigation Container -->
+    <div class="app-screen" id="app-screen">
+      <!-- 1. Home Dashboard View -->
+      <div id="view-home" class="screen-view active">
+        <header class="app-header">
+          <button class="btn-pro-nav" onclick="openPaywall()">
+            <i class="ph-fill ph-crown"></i> PRO
+          </button>
+          <h1>Walkaround</h1>
+          <div class="header-right-actions">
+            <button class="icon-btn" onclick="showOnboarding()" title="Guide & Tips">
+              <i class="ph-bold ph-question"></i>
+            </button>
+            <button class="icon-btn primary-btn-icon" onclick="openNewRentalModal()" title="Add Rental">
+              <i class="ph-bold ph-plus"></i>
+            </button>
+          </div>
+        </header>
+
+        <div class="scroll-content">
+          <!-- Clean Hero Banner -->
+          <div class="hero-clean-card">
+            <div class="hero-clean-header">
+              <div class="hero-badge">
+                <i class="ph-fill ph-shield-check"></i>
+                <span>30-SECOND CAR DEFENSE</span>
+              </div>
+            </div>
+            <h2>Protect Your Rental in 30 Seconds Before Driving Off</h2>
+            <p>Snap 5 quick perimeter angles at pick-up. We record exact GPS, time, and photo hashes so you have instant proof if billed later.</p>
+            <div class="hero-clean-footer">
+              <button class="btn btn-primary" onclick="startFast30SecWalkaround()" style="padding: 12px 20px; font-size: 13px;">
+                <i class="ph-bold ph-shield-check"></i> Start 30s Walkaround
+              </button>
+              <button class="btn btn-text-subtle" onclick="showOnboarding()">
+                How it works <i class="ph-bold ph-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Active Rentals Section -->
+          <div class="section-header">
+            <h3>Active Rentals</h3>
+            <span class="badge" id="active-rentals-count">1 Active</span>
+          </div>
+
+          <div id="rental-cards-list">
+            <!-- Rendered dynamically -->
+          </div>
+
+          <!-- Quick Inspection Tips Strip -->
+          <div class="tips-section">
+            <div class="section-header" style="padding: 0 0 8px 0;">
+              <h3>Commonly Missed Areas</h3>
+              <span class="hint">Check before leaving lot</span>
+            </div>
+            <div class="tips-grid">
+              <div class="tip-card">
+                <i class="ph-fill ph-circle-dashed tip-icon amber"></i>
+                <div class="tip-body">
+                  <strong>Lower Wheel Rims</strong>
+                  <span>Curb scrapes along alloy edges</span>
+                </div>
+              </div>
+              <div class="tip-card">
+                <i class="ph-fill ph-sun-horizon tip-icon blue"></i>
+                <div class="tip-body">
+                  <strong>Roof & Windshield</strong>
+                  <span>Rock chips and roof dings</span>
+                </div>
+              </div>
+              <div class="tip-card">
+                <i class="ph-fill ph-gauge tip-icon green"></i>
+                <div class="tip-body">
+                  <strong>Dashboard & Fuel</strong>
+                  <span>Snap with ignition ON</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Inspection Hub View -->
+      <div id="view-inspection-hub" class="screen-view">
+        <header class="app-header">
+          <button class="icon-btn" onclick="navigateHome()"><i class="ph-bold ph-caret-left"></i></button>
+          <h1 id="hub-title">Vehicle Audit</h1>
+          <button class="text-btn" onclick="navigateHome()">Done</button>
+        </header>
+
+        <div class="scroll-content">
+          <!-- Segmented Phase Control -->
+          <div class="segmented-control">
+            <button class="segment-btn active" id="seg-pickup" onclick="switchPhase('pickup')">1. Pick-up Audit</button>
+            <button class="segment-btn" id="seg-dropoff" onclick="switchPhase('dropoff')">2. Return Audit</button>
+          </div>
+
+          <!-- Vehicle Info Header -->
+          <div class="card vehicle-summary-card">
+            <div class="row-between">
+              <div>
+                <h3 id="hub-car-name">2024 Ford Mustang GT</h3>
+                <p class="subtitle" id="hub-car-sub">Hertz • Plate: 8TRP492</p>
+              </div>
+              <span class="status-pill green" id="hub-phase-pill">In Progress</span>
+            </div>
+            <div class="divider"></div>
+            <div class="stats-row">
+              <div>
+                <span class="stat-lbl">ZONES VERIFIED</span>
+                <span class="stat-val" id="hub-zones-count">0 / 12</span>
+              </div>
+              <div>
+                <span class="stat-lbl">ODOMETER</span>
+                <span class="stat-val" id="hub-odo-val">18,452 mi</span>
+              </div>
+              <div>
+                <span class="stat-lbl">FLAGGED FLAWS</span>
+                <span class="stat-val orange" id="hub-flaws-count">0 Flaws</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mileage & Fuel Action Button -->
+          <div class="card action-row-card" onclick="openDashboardModal()">
+            <i class="ph-fill ph-gauge card-row-icon blue"></i>
+            <div class="card-row-text">
+              <h4>Dashboard, Mileage & Fuel Level</h4>
+              <p id="hub-dash-summary">Tap to record odometer reading & snap gauge photo</p>
+            </div>
+            <i class="ph-bold ph-caret-right chevron"></i>
+          </div>
+
+          <!-- 12 Inspection Zones Checklist -->
+          <div class="section-header">
+            <h3>Vehicle Inspection Zones (Optional)</h3>
+            <span class="hint">Snap any zone or finish now</span>
+          </div>
+
+          <div class="zone-list" id="zone-list-container">
+            <!-- Rendered dynamically -->
+          </div>
+
+          <!-- Bottom Finish & Dispute Actions -->
+          <div class="bottom-actions">
+            <button class="btn btn-primary" onclick="certifyCurrentInspection()">
+              <i class="ph-fill ph-check-circle"></i> Save & Finish Check-In
+            </button>
+            <span class="hint" style="text-align: center; margin-top: 4px; display: block;">You can save at any time with as few or as many photos as you want.</span>
+            <button class="btn btn-indigo" id="btn-export-dispute" onclick="openDisputeDossier()" style="margin-top: 8px;">
+              <i class="ph-fill ph-file-text"></i> View Inspection Report (PDF)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Guided Camera Viewfinder Screen -->
+      <div id="view-camera" class="screen-view camera-mode">
+        <!-- Top HUD -->
+        <div class="camera-top-hud">
+          <button class="icon-btn-trans" onclick="closeCamera()"><i class="ph-bold ph-x"></i></button>
+          <div class="hud-pill">
+            <span class="rec-dot"></span>
+            <span class="rec-txt">REC</span>
+            <span class="sep">•</span>
+            <span id="hud-time-utc">14:32:08 UTC</span>
+            <span class="sep">•</span>
+            <span class="yellow-txt" id="hud-gps">33.941° N, 118.408° W</span>
+          </div>
+          <button class="icon-btn-trans" onclick="toggleFlash()"><i class="ph ph-lightning" id="flash-icon"></i></button>
+        </div>
+
+        <!-- Step Indicator -->
+        <div class="camera-step-banner">
+          <div class="row-between">
+            <span class="mono-yellow" id="cam-step-label">PICK-UP STEP 1 OF 12</span>
+            <span class="bold-white" id="cam-zone-title">Front Bumper & Grille</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="cam-progress-bar" style="width: 8.3%;"></div>
+          </div>
+        </div>
+
+        <!-- Viewfinder Center & Ghost Overlay -->
+        <div class="viewfinder-canvas" id="viewfinder-canvas">
+          <div class="ghost-frame">
+            <div class="ghost-reticle"></div>
+            <i class="ph ph-car-profile ghost-icon" id="ghost-icon"></i>
+            <span class="ghost-hint" id="ghost-hint">Align Front Bumper in Frame</span>
+          </div>
+          <div class="simulated-viewfinder-feed" id="viewfinder-feed">
+            <div class="garage-lights-grid"></div>
+            <div class="car-mock-silhouette" id="car-silhouette">
+              <span id="sim-car-text">FORD MUSTANG GT</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Camera Bottom Controls -->
+        <div class="camera-bottom-controls">
+          <div class="instruction-box" id="cam-instruction">
+            <i class="ph-fill ph-info"></i>
+            <span>Stand 6 feet back facing front. Check for low curb scrapes, plate mount cracks, and fog light chips.</span>
+          </div>
+
+          <div class="shutter-row">
+            <button class="nav-arrow-btn" onclick="prevZone()"><i class="ph-bold ph-arrow-left"></i></button>
+            <button class="shutter-btn" onclick="captureZonePhoto()">
+              <div class="shutter-inner" id="shutter-inner"></div>
+            </button>
+            <button class="nav-arrow-btn" onclick="nextZone()"><i class="ph-bold ph-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Dispute Dossier Command Center View -->
+      <div id="view-dispute" class="screen-view">
+        <header class="app-header">
+          <button class="icon-btn" onclick="closeDisputeDossier()"><i class="ph-bold ph-caret-left"></i></button>
+          <h1>Dispute Dossier</h1>
+          <button class="text-btn" onclick="closeDisputeDossier()">Close</button>
+        </header>
+
+        <div class="scroll-content">
+          <div class="dispute-hero">
+            <i class="ph-fill ph-shield-checkered dispute-hero-icon"></i>
+            <h2>Dispute Defense Dossier</h2>
+            <p>Certified photographic evidence package formatted for submission to rental claims, CDW insurers, or credit card dispute departments.</p>
+          </div>
+
+          <!-- Section 1: Side-by-Side Comparison -->
+          <div class="card">
+            <div class="section-header" style="padding: 0 0 10px 0;">
+              <h3>1. Visual Comparison Matrix</h3>
+            </div>
+            
+            <div class="zone-chips-scroll" id="compare-zone-chips">
+              <!-- Rendered dynamically -->
+            </div>
+
+            <div class="compare-box">
+              <h4 id="compare-zone-name">Front Bumper & Grille</h4>
+              <div class="compare-grid">
+                <div class="compare-col">
+                  <span class="compare-badge blue">1. PICK-UP POSSESSION</span>
+                  <div class="compare-photo-placeholder" id="compare-pickup-img">
+                    <i class="ph-fill ph-seal-check blue"></i>
+                    <span>Verified Pick-up Photo</span>
+                  </div>
+                  <span class="micro-timestamp" id="compare-pickup-time">2026-08-21 09:15 UTC</span>
+                </div>
+                <div class="compare-col">
+                  <span class="compare-badge green">2. RETURN SURRENDER</span>
+                  <div class="compare-photo-placeholder" id="compare-dropoff-img">
+                    <i class="ph-fill ph-seal-check green"></i>
+                    <span>Verified Return Photo</span>
+                  </div>
+                  <span class="micro-timestamp" id="compare-dropoff-time">2026-08-21 16:40 UTC</span>
+                </div>
+              </div>
+              <div class="damage-callout-box" id="compare-damage-box">
+                <i class="ph-fill ph-warning orange"></i>
+                <span id="compare-damage-text">Pre-existing damage logged: 3-inch lower bumper scrape</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: Rebuttal Letter Generator -->
+          <div class="card action-row-card" onclick="openLetterGenerator()">
+            <i class="ph-fill ph-envelope-open card-row-icon indigo"></i>
+            <div class="card-row-text">
+              <h4>2. Dispute Response Letter Template</h4>
+              <p>Pre-formatted summary ready to email to Hertz, Enterprise, or your credit card</p>
+            </div>
+            <i class="ph-bold ph-caret-right chevron"></i>
+          </div>
+
+          <!-- Section 3: PDF Generation & Export -->
+          <div class="card pdf-export-card">
+            <div class="row-between">
+              <div class="row-gap-8">
+                <i class="ph-fill ph-file-pdf pdf-icon"></i>
+                <h4>Inspection Proof PDF Report</h4>
+              </div>
+              <span class="status-pill green">READY</span>
+            </div>
+            <p>Generates a clear side-by-side comparison report with GPS and timestamp records to easily email to claims or customer support.</p>
+            <button class="btn btn-primary btn-large" onclick="generateCertifiedPDF()">
+              <i class="ph-fill ph-download-simple"></i> Download Inspection PDF Report
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modals -->
+
+    <!-- New Rental Modal -->
+    <div class="modal-backdrop" id="modal-new-rental">
+      <div class="modal-sheet">
+        <div class="modal-header">
+          <button class="text-btn" onclick="closeModal('modal-new-rental')">Cancel</button>
+          <h3>New Rental</h3>
+          <button class="text-btn bold" onclick="submitNewRental()">Start</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Rental Agency</label>
+            <select id="input-agency">
+              <option value="Enterprise">Enterprise</option>
+              <option value="Hertz" selected>Hertz</option>
+              <option value="Avis">Avis</option>
+              <option value="Budget">Budget</option>
+              <option value="Sixt">Sixt</option>
+              <option value="Turo">Turo</option>
+              <option value="National">National</option>
+              <option value="Alamo">Alamo</option>
+              <option value="U-Haul">U-Haul / Moving Truck</option>
+              <option value="Other">Other Agency</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Make</label>
+              <input type="text" id="input-make" placeholder="e.g. Ford" value="Ford">
+            </div>
+            <div class="form-group">
+              <label>Model</label>
+              <input type="text" id="input-model" placeholder="e.g. Mustang GT" value="Mustang GT">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>License Plate</label>
+              <input type="text" id="input-plate" placeholder="e.g. 8TRP492" value="8TRP492" style="text-transform: uppercase;">
+            </div>
+            <div class="form-group">
+              <label>State / Region</label>
+              <input type="text" id="input-state" placeholder="CA" value="CA" style="text-transform: uppercase;">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Agreement / Reservation #</label>
+            <input type="text" id="input-res" placeholder="H89204128" value="H89204128">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard Odometer Modal -->
+    <div class="modal-backdrop" id="modal-dashboard">
+      <div class="modal-sheet">
+        <div class="modal-header">
+          <button class="text-btn" onclick="closeModal('modal-dashboard')">Cancel</button>
+          <h3>Mileage & Fuel</h3>
+          <button class="text-btn bold" onclick="saveDashboardModal()">Save</button>
+        </div>
+        <div class="modal-body">
+          <div class="gauge-photo-box" onclick="toggleDashPhoto()">
+            <i class="ph-fill ph-camera-plus" id="dash-photo-icon"></i>
+            <span id="dash-photo-lbl">Snap Dashboard & Fuel Gauge Photo</span>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Odometer Reading</label>
+              <input type="text" id="input-odo" placeholder="18,452" value="18,452">
+            </div>
+            <div class="form-group">
+              <label>Unit</label>
+              <select id="input-odo-unit">
+                <option value="mi">Miles (mi)</option>
+                <option value="km">Kilometers (km)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Fuel Level</label>
+            <select id="input-fuel">
+              <option value="8/8 (Full)" selected>8/8 (Full)</option>
+              <option value="7/8">7/8</option>
+              <option value="6/8 (3/4)">6/8 (3/4)</option>
+              <option value="4/8 (1/2)">4/8 (1/2)</option>
+              <option value="2/8 (1/4)">2/8 (1/4)</option>
+              <option value="Empty">Empty (&lt; 1/8)</option>
+              <option value="EV 100%">EV 100%</option>
+              <option value="EV 80%+">EV 80%+</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Damage Markup Modal -->
+    <div class="modal-backdrop" id="modal-damage">
+      <div class="modal-sheet">
+        <div class="modal-header">
+          <button class="text-btn" onclick="closeModal('modal-damage')">Cancel</button>
+          <h3 id="damage-modal-title">Flag Pre-Existing Damage</h3>
+          <button class="text-btn bold" onclick="saveDamageTag()">Add Tag</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Damage Classification</label>
+            <select id="input-damage-type">
+              <option value="Scratch / Scrape">Scratch / Scrape</option>
+              <option value="Dent / Ding">Dent / Ding</option>
+              <option value="Paint Chip / Peeling">Paint Chip / Peeling</option>
+              <option value="Rim Curb Rash">Rim Curb Rash</option>
+              <option value="Glass Chip / Crack">Glass Chip / Crack</option>
+              <option value="Plastic Crack">Plastic Crack</option>
+              <option value="Interior Stain / Tear">Interior Stain / Tear</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Severity</label>
+            <select id="input-damage-sev">
+              <option value="Minor (Surface < 1 in)">Minor (Surface &lt; 1 in)</option>
+              <option value="Moderate (Visible > 1 in)" selected>Moderate (Visible &gt; 1 in)</option>
+              <option value="Severe (Structural / Creased)">Severe (Structural / Creased)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Specific Location & Notes</label>
+            <input type="text" id="input-damage-notes" placeholder="e.g. 2-inch scrape near bottom trim" value="3-inch vertical scratch near lower reverse sensor">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dispute Letter Modal -->
+    <div class="modal-backdrop" id="modal-letter">
+      <div class="modal-sheet modal-tall">
+        <div class="modal-header">
+          <button class="text-btn" onclick="closeModal('modal-letter')">Done</button>
+          <h3>Legal Dispute Letter</h3>
+          <button class="text-btn bold" onclick="copyDisputeLetter()">Copy</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Target Recipient</label>
+            <select id="input-letter-target" onchange="renderLetterText()">
+              <option value="agency">Rental Agency Damage Recovery Unit (Hertz / Enterprise)</option>
+              <option value="creditcard">Credit Card CDW Benefits (Chase / AMEX / Capital One)</option>
+              <option value="turo">Turo Fair Claims Resolution</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Your Legal Name</label>
+            <input type="text" id="input-renter-name" value="Jonathan Cousins" oninput="renderLetterText()">
+          </div>
+          <div class="form-group">
+            <label>Agency Claim / Reference #</label>
+            <input type="text" id="input-claim-no" value="CLM-883192" oninput="renderLetterText()">
+          </div>
+          <div class="letter-preview-box">
+            <pre id="letter-content-display"></pre>
+          </div>
+          <button class="btn btn-primary" onclick="copyDisputeLetter()">
+            <i class="ph-bold ph-copy"></i> Copy Letter to Clipboard
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paywall Modal -->
+    <div class="modal-backdrop" id="modal-paywall">
+      <div class="modal-sheet modal-tall">
+        <div class="modal-header">
+          <button class="icon-btn" onclick="closeModal('modal-paywall')"><i class="ph ph-x"></i></button>
+          <h3>Walkaround Pro</h3>
+          <div style="width: 32px;"></div>
+        </div>
+        <div class="modal-body text-center">
+          <i class="ph-fill ph-shield-check hero-paywall-icon"></i>
+          <h2>Protect Yourself from $500+ Bogus Damage Bills</h2>
+          <p class="paywall-sub">Rental agencies bill thousands daily for pre-existing scratches. Walkaround gives you clear, timestamped proof of your car's true condition.</p>
+
+          <div class="paywall-features">
+            <div class="p-feat"><i class="ph-fill ph-check-circle"></i> <span>Unlimited Forensic PDF Dossiers</span></div>
+            <div class="p-feat"><i class="ph-fill ph-check-circle"></i> <span>Cryptographic GPS & Timestamp Stamps</span></div>
+            <div class="p-feat"><i class="ph-fill ph-check-circle"></i> <span>Legal Dispute Rebuttal Letters</span></div>
+            <div class="p-feat"><i class="ph-fill ph-check-circle"></i> <span>Unlimited Vehicle Trips & Turo Mode</span></div>
+          </div>
+
+          <div class="paywall-tier active">
+            <div class="tier-top">
+              <span class="tier-badge">MOST POPULAR • $1.66/MO</span>
+              <span class="tier-price">$19.99 / yr</span>
+            </div>
+            <h4>Annual Pro Pass</h4>
+          </div>
+
+          <div class="paywall-tier">
+            <div class="tier-top">
+              <span class="tier-badge">1 TRIP DEFENSE</span>
+              <span class="tier-price">$2.99 once</span>
+            </div>
+            <h4>Single Rental Trip Pass</h4>
+          </div>
+
+          <button class="btn btn-indigo btn-large" onclick="unlockProPass()">
+            <i class="ph-fill ph-lock-key-open"></i> Unlock Protection Now
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Onboarding Modal Carousel (Interactive Step-by-Step Walkthrough) -->
+    <div class="modal-backdrop" id="modal-onboarding">
+      <div class="modal-sheet modal-tall onboarding-sheet">
+        <div class="onboarding-top">
+          <span class="step-indicator-txt" id="ob-step-num">STEP 1 OF 4</span>
+          <span class="skip-btn" onclick="closeModal('modal-onboarding')">Skip</span>
+        </div>
+
+        <!-- Slide 0: Step 1 Camera Walkthrough -->
+        <div class="onboarding-slide active" id="ob-slide-0">
+          <div class="ob-interactive-preview">
+            <div class="ob-cam-mock">
+              <div class="ob-cam-hud">
+                <span class="rec-dot"></span>
+                <span>REC • UTC 14:32 • 📍 LAX LOT</span>
+              </div>
+              <div class="ob-ghost-box">
+                <i class="ph ph-car-profile"></i>
+                <span>Align Front Bumper</span>
+              </div>
+              <div class="ob-cam-footer">
+                <div class="ob-shutter-anim"></div>
+              </div>
+            </div>
+          </div>
+          <span class="ob-badge blue">STEP 1: 60-SEC WALKTHROUGH</span>
+          <h2>Follow the Ghost Guides</h2>
+          <p>Just walk around your car. The app shows you exactly where to stand (Front, Sides, Rear, Wheels) and auto-stamps GPS & UTC time.</p>
+        </div>
+
+        <!-- Slide 1: Step 2 Damage Markup -->
+        <div class="onboarding-slide" id="ob-slide-1">
+          <div class="ob-interactive-preview">
+            <div class="ob-damage-mock" onclick="triggerMockScratchTap()">
+              <div class="ob-car-panel">
+                <div class="ob-scratch-line"></div>
+                <div class="ob-tap-pulse" id="ob-pulse-dot">
+                  <i class="ph-bold ph-hand-tap"></i>
+                </div>
+                <div class="ob-tag-bubble" id="ob-tag-bubble">
+                  <i class="ph-fill ph-warning-circle"></i>
+                  <span>3" Bumper Scrape Tagged ✓</span>
+                </div>
+              </div>
+              <span class="ob-tap-hint">👆 Tap the red spot to see how tagging works</span>
+            </div>
+          </div>
+          <span class="ob-badge orange">STEP 2: PRE-EXISTING DAMAGE</span>
+          <h2>Spot a Scratch? Just Tap It</h2>
+          <p>If you see a pre-existing blemish or rim rash, tap it on screen. It adds a certified note and tag to your inspection report in 1 second.</p>
+        </div>
+
+        <!-- Slide 2: Step 3 Dashboard Verification -->
+        <div class="onboarding-slide" id="ob-slide-2">
+          <div class="ob-interactive-preview">
+            <div class="ob-dash-mock">
+              <div class="ob-gauge-row">
+                <div class="ob-gauge-item">
+                  <i class="ph-fill ph-speedometer"></i>
+                  <span class="ob-val">18,452 mi</span>
+                  <span class="ob-lbl">ODOMETER</span>
+                </div>
+                <div class="ob-gauge-item">
+                  <i class="ph-fill ph-gas-pump"></i>
+                  <span class="ob-val">8/8 FULL</span>
+                  <span class="ob-lbl">FUEL GAUGE</span>
+                </div>
+              </div>
+              <div class="ob-verified-badge">
+                <i class="ph-fill ph-seal-check"></i>
+                <span>Ignition ON • Zero Missing Fuel Fees</span>
+              </div>
+            </div>
+          </div>
+          <span class="ob-badge blue">STEP 3: DASHBOARD CHECK</span>
+          <h2>Lock In Mileage & Gas Level</h2>
+          <p>Snap one photo of the dashboard cluster with ignition ON so the agency can never charge you $9.99/gal for "missing fuel."</p>
+        </div>
+
+        <!-- Slide 3: Step 4 Dispute Dossier -->
+        <div class="onboarding-slide" id="ob-slide-3">
+          <div class="ob-interactive-preview">
+            <div class="ob-dossier-mock">
+              <div class="ob-pdf-cover">
+                <div class="ob-pdf-header">
+                  <i class="ph-fill ph-shield-check"></i>
+                  <span>WALKAROUND INSPECTION REPORT</span>
+                </div>
+                <div class="ob-side-by-side-mini">
+                  <div class="ob-mini-col"><span>1. PICKUP</span><div class="ob-mini-box"></div></div>
+                  <div class="ob-mini-col"><span>2. RETURN</span><div class="ob-mini-box"></div></div>
+                </div>
+                <span class="ob-pdf-badge">+ Summary Letter Included</span>
+              </div>
+            </div>
+          </div>
+          <span class="ob-badge green">STEP 4: 1-TAP PHOTO REPORT</span>
+          <h2>Organized Proof in 1 Tap</h2>
+          <p>If the rental company ever questions a mark, export a clear side-by-side photo report with timestamps to share directly with customer service or your credit card provider.</p>
+        </div>
+
+        <!-- Carousel Indicators & Button -->
+        <div class="onboarding-bottom">
+          <div class="dots-row">
+            <span class="dot active" id="dot-0" onclick="goToOnboardingSlide(0)" style="cursor: pointer;"></span>
+            <span class="dot" id="dot-1" onclick="goToOnboardingSlide(1)" style="cursor: pointer;"></span>
+            <span class="dot" id="dot-2" onclick="goToOnboardingSlide(2)" style="cursor: pointer;"></span>
+            <span class="dot" id="dot-3" onclick="goToOnboardingSlide(3)" style="cursor: pointer;"></span>
+          </div>
+          <button class="btn btn-indigo btn-large" id="ob-next-btn" onclick="advanceOnboarding()">
+            Continue
+          </button>
+          <span class="privacy-micro">100% Offline • No Sign-up Required • Stored on Device</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
