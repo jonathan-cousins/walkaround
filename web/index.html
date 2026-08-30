@@ -111,7 +111,7 @@
       <!-- 2. Inspection Hub View -->
       <div id="view-inspection-hub" class="screen-view">
         <header class="app-header">
-          <button class="icon-btn" onclick="navigateHome()"><i class="ph-bold ph-caret-left"></i></button>
+          <button class="icon-btn" onclick="navigateHome()" aria-label="Go Back"><i class="ph-bold ph-caret-left"></i></button>
           <h1 id="hub-title">Vehicle Audit</h1>
           <button class="text-btn" onclick="navigateHome()">Done</button>
         </header>
@@ -186,7 +186,7 @@
       <div id="view-camera" class="screen-view camera-mode">
         <!-- Top HUD -->
         <div class="camera-top-hud">
-          <button class="icon-btn-trans" onclick="closeCamera()"><i class="ph-bold ph-x"></i></button>
+          <button class="icon-btn-trans" onclick="closeCamera()" aria-label="Close Camera"><i class="ph-bold ph-x"></i></button>
           <div class="hud-pill">
             <span class="rec-dot"></span>
             <span class="rec-txt">REC</span>
@@ -195,7 +195,7 @@
             <span class="sep">•</span>
             <span class="yellow-txt" id="hud-gps">33.941° N, 118.408° W</span>
           </div>
-          <button class="icon-btn-trans" onclick="toggleFlash()"><i class="ph ph-lightning" id="flash-icon"></i></button>
+          <button class="icon-btn-trans" onclick="toggleFlash()" aria-label="Toggle Flash"><i class="ph ph-lightning" id="flash-icon"></i></button>
         </div>
 
         <!-- Step Indicator -->
@@ -232,11 +232,11 @@
           </div>
 
           <div class="shutter-row">
-            <button class="nav-arrow-btn" onclick="prevZone()"><i class="ph-bold ph-arrow-left"></i></button>
-            <button class="shutter-btn" onclick="captureZonePhoto()">
+            <button class="nav-arrow-btn" onclick="prevZone()" aria-label="Previous Zone"><i class="ph-bold ph-arrow-left"></i></button>
+            <button class="shutter-btn" onclick="captureZonePhoto()" aria-label="Take Photo">
               <div class="shutter-inner" id="shutter-inner"></div>
             </button>
-            <button class="nav-arrow-btn" onclick="nextZone()"><i class="ph-bold ph-arrow-right"></i></button>
+            <button class="nav-arrow-btn" onclick="nextZone()" aria-label="Next Zone"><i class="ph-bold ph-arrow-right"></i></button>
           </div>
         </div>
       </div>
@@ -244,7 +244,7 @@
       <!-- 4. Dispute Dossier Command Center View -->
       <div id="view-dispute" class="screen-view">
         <header class="app-header">
-          <button class="icon-btn" onclick="closeDisputeDossier()"><i class="ph-bold ph-caret-left"></i></button>
+          <button class="icon-btn" onclick="closeDisputeDossier()" aria-label="Go Back"><i class="ph-bold ph-caret-left"></i></button>
           <h1>Dispute Dossier</h1>
           <button class="text-btn" onclick="closeDisputeDossier()">Close</button>
         </header>
@@ -494,7 +494,7 @@
     <div class="modal-backdrop" id="modal-paywall">
       <div class="modal-sheet modal-tall">
         <div class="modal-header">
-          <button class="icon-btn" onclick="closeModal('modal-paywall')"><i class="ph ph-x"></i></button>
+          <button class="icon-btn" onclick="closeModal('modal-paywall')" aria-label="Close Paywall"><i class="ph ph-x"></i></button>
           <h3>Walkaround Pro</h3>
           <div style="width: 32px;"></div>
         </div>
