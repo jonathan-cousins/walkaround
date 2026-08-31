@@ -111,7 +111,7 @@
       <!-- 2. Inspection Hub View -->
       <div id="view-inspection-hub" class="screen-view">
         <header class="app-header">
-          <button class="icon-btn" onclick="navigateHome()"><i class="ph-bold ph-caret-left"></i></button>
+          <button class="icon-btn" onclick="navigateHome()" aria-label="Go back"><i class="ph-bold ph-caret-left"></i></button>
           <h1 id="hub-title">Vehicle Audit</h1>
           <button class="text-btn" onclick="navigateHome()">Done</button>
         </header>
@@ -186,7 +186,7 @@
       <div id="view-camera" class="screen-view camera-mode">
         <!-- Top HUD -->
         <div class="camera-top-hud">
-          <button class="icon-btn-trans" onclick="closeCamera()"><i class="ph-bold ph-x"></i></button>
+          <button class="icon-btn-trans" onclick="closeCamera()" aria-label="Close camera"><i class="ph-bold ph-x"></i></button>
           <div class="hud-pill">
             <span class="rec-dot"></span>
             <span class="rec-txt">REC</span>
@@ -195,7 +195,7 @@
             <span class="sep">•</span>
             <span class="yellow-txt" id="hud-gps">33.941° N, 118.408° W</span>
           </div>
-          <button class="icon-btn-trans" onclick="toggleFlash()"><i class="ph ph-lightning" id="flash-icon"></i></button>
+          <button class="icon-btn-trans" onclick="toggleFlash()" aria-label="Toggle flash"><i class="ph ph-lightning" id="flash-icon"></i></button>
         </div>
 
         <!-- Step Indicator -->
