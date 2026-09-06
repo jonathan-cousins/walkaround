@@ -1702,3 +1702,9 @@ body {
   color: var(--text-muted);
   font-weight: 600;
 }
+
+/* Accessibility: Focus visible outline for keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--brand-emerald);
+  outline-offset: 2px;
+}
