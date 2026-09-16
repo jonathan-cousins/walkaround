@@ -1,0 +1,3 @@
+## 2026-09-16 - Missing ARIA Labels on Icon-Only Buttons
+**Learning:** Custom UI architectures using lightweight icon libraries (e.g., Phosphor icons) frequently rely on pure visual semantics (e.g., `class="icon-btn"`). This application has a pervasive pattern of rendering icon-only `<button>` elements—such as for navigation, camera control, or damage flagging—without associated textual descriptors, severely degrading screen reader usability.
+**Action:** When implementing or modifying custom buttons, always verify whether they contain a textual label. If they exclusively contain icon elements, append a descriptive `aria-label` string (static or dynamically generated via template literals) to guarantee non-visual accessibility parity.
