@@ -35,10 +35,10 @@
           </button>
           <h1>Walkaround</h1>
           <div class="header-right-actions">
-            <button class="icon-btn" onclick="showOnboarding()" title="Guide & Tips">
+            <button class="icon-btn" onclick="showOnboarding()" title="Guide & Tips" aria-label="Guide and Tips">
               <i class="ph-bold ph-question"></i>
             </button>
-            <button class="icon-btn primary-btn-icon" onclick="openNewRentalModal()" title="Add Rental">
+            <button class="icon-btn primary-btn-icon" onclick="openNewRentalModal()" title="Add Rental" aria-label="Add Rental">
               <i class="ph-bold ph-plus"></i>
             </button>
           </div>
@@ -111,7 +111,7 @@
       <!-- 2. Inspection Hub View -->
       <div id="view-inspection-hub" class="screen-view">
         <header class="app-header">
-          <button class="icon-btn" onclick="navigateHome()"><i class="ph-bold ph-caret-left"></i></button>
+          <button class="icon-btn" onclick="navigateHome()" aria-label="Back to Home"><i class="ph-bold ph-caret-left"></i></button>
           <h1 id="hub-title">Vehicle Audit</h1>
           <button class="text-btn" onclick="navigateHome()">Done</button>
         </header>
@@ -186,7 +186,7 @@
       <div id="view-camera" class="screen-view camera-mode">
         <!-- Top HUD -->
         <div class="camera-top-hud">
-          <button class="icon-btn-trans" onclick="closeCamera()"><i class="ph-bold ph-x"></i></button>
+          <button class="icon-btn-trans" onclick="closeCamera()" aria-label="Close Camera"><i class="ph-bold ph-x"></i></button>
           <div class="hud-pill">
             <span class="rec-dot"></span>
             <span class="rec-txt">REC</span>
@@ -195,7 +195,7 @@
             <span class="sep">•</span>
             <span class="yellow-txt" id="hud-gps">33.941° N, 118.408° W</span>
           </div>
-          <button class="icon-btn-trans" onclick="toggleFlash()"><i class="ph ph-lightning" id="flash-icon"></i></button>
+          <button class="icon-btn-trans" onclick="toggleFlash()" aria-label="Toggle Flash"><i class="ph ph-lightning" id="flash-icon"></i></button>
         </div>
 
         <!-- Step Indicator -->
@@ -232,11 +232,11 @@
           </div>
 
           <div class="shutter-row">
-            <button class="nav-arrow-btn" onclick="prevZone()"><i class="ph-bold ph-arrow-left"></i></button>
-            <button class="shutter-btn" onclick="captureZonePhoto()">
+            <button class="nav-arrow-btn" onclick="prevZone()" aria-label="Previous Zone"><i class="ph-bold ph-arrow-left"></i></button>
+            <button class="shutter-btn" onclick="captureZonePhoto()" aria-label="Capture Photo">
               <div class="shutter-inner" id="shutter-inner"></div>
             </button>
-            <button class="nav-arrow-btn" onclick="nextZone()"><i class="ph-bold ph-arrow-right"></i></button>
+            <button class="nav-arrow-btn" onclick="nextZone()" aria-label="Next Zone"><i class="ph-bold ph-arrow-right"></i></button>
           </div>
         </div>
       </div>
@@ -244,7 +244,7 @@
       <!-- 4. Dispute Dossier Command Center View -->
       <div id="view-dispute" class="screen-view">
         <header class="app-header">
-          <button class="icon-btn" onclick="closeDisputeDossier()"><i class="ph-bold ph-caret-left"></i></button>
+          <button class="icon-btn" onclick="closeDisputeDossier()" aria-label="Back to Home"><i class="ph-bold ph-caret-left"></i></button>
           <h1>Dispute Dossier</h1>
           <button class="text-btn" onclick="closeDisputeDossier()">Close</button>
         </header>
@@ -333,7 +333,7 @@
         </div>
         <div class="modal-body">
           <div class="form-group">
-            <label>Rental Agency</label>
+            <label for="input-agency">Rental Agency</label>
             <select id="input-agency">
               <option value="Enterprise">Enterprise</option>
               <option value="Hertz" selected>Hertz</option>
@@ -349,26 +349,26 @@
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label>Make</label>
+              <label for="input-make">Make</label>
               <input type="text" id="input-make" placeholder="e.g. Ford" value="Ford">
             </div>
             <div class="form-group">
-              <label>Model</label>
+              <label for="input-model">Model</label>
               <input type="text" id="input-model" placeholder="e.g. Mustang GT" value="Mustang GT">
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label>License Plate</label>
+              <label for="input-plate">License Plate</label>
               <input type="text" id="input-plate" placeholder="e.g. 8TRP492" value="8TRP492" style="text-transform: uppercase;">
             </div>
             <div class="form-group">
-              <label>State / Region</label>
+              <label for="input-state">State / Region</label>
               <input type="text" id="input-state" placeholder="CA" value="CA" style="text-transform: uppercase;">
             </div>
           </div>
           <div class="form-group">
-            <label>Agreement / Reservation #</label>
+            <label for="input-res">Agreement / Reservation #</label>
             <input type="text" id="input-res" placeholder="H89204128" value="H89204128">
           </div>
         </div>
@@ -390,11 +390,11 @@
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label>Odometer Reading</label>
+              <label for="input-odo">Odometer Reading</label>
               <input type="text" id="input-odo" placeholder="18,452" value="18,452">
             </div>
             <div class="form-group">
-              <label>Unit</label>
+              <label for="input-odo-unit">Unit</label>
               <select id="input-odo-unit">
                 <option value="mi">Miles (mi)</option>
                 <option value="km">Kilometers (km)</option>
@@ -402,7 +402,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label>Fuel Level</label>
+            <label for="input-fuel">Fuel Level</label>
             <select id="input-fuel">
               <option value="8/8 (Full)" selected>8/8 (Full)</option>
               <option value="7/8">7/8</option>
@@ -428,7 +428,7 @@
         </div>
         <div class="modal-body">
           <div class="form-group">
-            <label>Damage Classification</label>
+            <label for="input-damage-type">Damage Classification</label>
             <select id="input-damage-type">
               <option value="Scratch / Scrape">Scratch / Scrape</option>
               <option value="Dent / Ding">Dent / Ding</option>
@@ -440,7 +440,7 @@
             </select>
           </div>
           <div class="form-group">
-            <label>Severity</label>
+            <label for="input-damage-sev">Severity</label>
             <select id="input-damage-sev">
               <option value="Minor (Surface < 1 in)">Minor (Surface &lt; 1 in)</option>
               <option value="Moderate (Visible > 1 in)" selected>Moderate (Visible &gt; 1 in)</option>
@@ -448,7 +448,7 @@
             </select>
           </div>
           <div class="form-group">
-            <label>Specific Location & Notes</label>
+            <label for="input-damage-notes">Specific Location & Notes</label>
             <input type="text" id="input-damage-notes" placeholder="e.g. 2-inch scrape near bottom trim" value="3-inch vertical scratch near lower reverse sensor">
           </div>
         </div>
@@ -465,7 +465,7 @@
         </div>
         <div class="modal-body">
           <div class="form-group">
-            <label>Target Recipient</label>
+            <label for="input-letter-target">Target Recipient</label>
             <select id="input-letter-target" onchange="renderLetterText()">
               <option value="agency">Rental Agency Damage Recovery Unit (Hertz / Enterprise)</option>
               <option value="creditcard">Credit Card CDW Benefits (Chase / AMEX / Capital One)</option>
@@ -473,11 +473,11 @@
             </select>
           </div>
           <div class="form-group">
-            <label>Your Legal Name</label>
+            <label for="input-renter-name">Your Legal Name</label>
             <input type="text" id="input-renter-name" value="Jonathan Cousins" oninput="renderLetterText()">
           </div>
           <div class="form-group">
-            <label>Agency Claim / Reference #</label>
+            <label for="input-claim-no">Agency Claim / Reference #</label>
             <input type="text" id="input-claim-no" value="CLM-883192" oninput="renderLetterText()">
           </div>
           <div class="letter-preview-box">
@@ -494,7 +494,7 @@
     <div class="modal-backdrop" id="modal-paywall">
       <div class="modal-sheet modal-tall">
         <div class="modal-header">
-          <button class="icon-btn" onclick="closeModal('modal-paywall')"><i class="ph ph-x"></i></button>
+          <button class="icon-btn" onclick="closeModal('modal-paywall')" aria-label="Close Paywall"><i class="ph ph-x"></i></button>
           <h3>Walkaround Pro</h3>
           <div style="width: 32px;"></div>
         </div>
