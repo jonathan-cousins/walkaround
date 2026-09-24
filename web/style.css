@@ -158,6 +158,11 @@ body {
 }
 
 /* Buttons & Navigation */
+button:focus-visible {
+  outline: 2px solid var(--brand-emerald);
+  outline-offset: 2px;
+}
+
 .icon-btn {
   background: var(--card-subtle);
   border: 1px solid var(--border-color);
