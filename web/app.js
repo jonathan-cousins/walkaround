@@ -253,10 +253,10 @@ function renderInspectionHub() {
         ${hasDmg ? '<span style="color: #F59E0B; font-size: 10px; font-weight: 700;">⚠️ Pre-existing Flaw Flagged</span>' : ''}
       </div>
       <div class="zone-actions">
-        <button class="camera-snap-btn" onclick="startCameraAt(${idx})">
+        <button class="camera-snap-btn" onclick="startCameraAt(${idx})" aria-label="Snap Photo" title="Snap Photo">
           <i class="ph ph-camera"></i>
         </button>
-        <button class="flag-damage-btn" onclick="openDamageModal('${zone.id}', '${zone.short}')">
+        <button class="flag-damage-btn" onclick="openDamageModal('${zone.id}', '${zone.short}')" aria-label="Flag Damage" title="Flag Damage">
           <i class="ph ph-warning-circle"></i>
         </button>
       </div>
